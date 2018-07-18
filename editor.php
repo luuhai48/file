@@ -37,7 +37,7 @@ if (isset($_POST['content2'])){
 	}
 if (isset($_POST['newfolder'])){
 	function newfolder($folderdir,$dir){
-		mkdir($folderdir, 0777, true);
+		mkdir($folderdir, 777, true);
 		header("Location: editor.php?dir=" . $dir);
 	}
 	$directory = $_POST['dir'];
@@ -79,7 +79,28 @@ if (isset($_GET['newfile'])): ?>
 	<form action="editor.php" method="POST">
 	<input type="hidden" name="filedir" value="<?php echo $_GET['newfile'] ?>"/>
 	<input type="text" name="filename" placeholder="File Name:"/><br>
-	<textarea id="content2" name="content2" rows="28" cols="150" placeholder="Enter The Code Here"></textarea><br>
+	<textarea id="content2" name="content2" rows="28" cols="150" placeholder="Enter The Code Here"></textarea>
+	<script>
+	function enableTab(id) {
+	    var el = document.getElementById(id);
+	    el.onkeydown = function(e) {
+		if (e.keyCode === 9) { // tab was pressed
+		    // get caret position/selection
+		    var val = this.value,
+			start = this.selectionStart,
+			end = this.selectionEnd;
+		    // set textarea value to: text before caret + tab + text after caret
+		    this.value = val.substring(0, start) + '\t' + val.substring(end);
+		    // put caret at right position again
+		    this.selectionStart = this.selectionEnd = start + 1;
+		    // prevent the focus lose
+		    return false;
+		}
+	    };
+	}
+	enableTab('content2');
+	</script>	
+	<br>
 	<input type="submit" value="Submit" class="btn btn-success" style="width:100px"/>
 	<a class="btn btn-danger" href="/editor.php">Cancel</a>
 	</form>
@@ -117,7 +138,28 @@ if (isset($_GET['newfile'])==false):
 	<textarea id="content" name="content" rows="28" cols="150" placeholder="Enter The Code Here"><?php
 		$file = file_get_contents($_GET['edit']);
 		echo htmlentities($file);
-	?></textarea><br>
+	?></textarea>
+	<script>
+	function enableTab(id) {
+	    var el = document.getElementById(id);
+	    el.onkeydown = function(e) {
+		if (e.keyCode === 9) { // tab was pressed
+		    // get caret position/selection
+		    var val = this.value,
+			start = this.selectionStart,
+			end = this.selectionEnd;
+		    // set textarea value to: text before caret + tab + text after caret
+		    this.value = val.substring(0, start) + '\t' + val.substring(end);
+		    // put caret at right position again
+		    this.selectionStart = this.selectionEnd = start + 1;
+		    // prevent the focus lose
+		    return false;
+		}
+	    };
+	}
+	enableTab('content');
+	</script>
+	<br>
 	<input type="submit" value="Submit" class="btn btn-success" style="width:100px"/>
 	<a class="btn btn-danger" href="/editor.php">Cancel</a>
 	</form>
