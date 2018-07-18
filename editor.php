@@ -37,7 +37,7 @@ if (isset($_POST['content2'])){
 	}
 if (isset($_POST['newfolder'])){
 	function newfolder($folderdir,$dir){
-		mkdir($folderdir);
+		mkdir($folderdir, 0777, true);
 		header("Location: editor.php?dir=" . $dir);
 	}
 	$directory = $_POST['dir'];
