@@ -179,7 +179,7 @@ body{
     grid-template-columns: 6% 68% 26%
 }
 .window .addressbar .address input,.window .addressbar .search input{
-    width:calc(100% - 50px)
+    width:calc(100% - 30px)
 }
 .window .addressbar .redirect i:hover{
     color:#7d7d7d
