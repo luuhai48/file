@@ -48,7 +48,7 @@
    <label for="wurl"><span>Website Url: </span><input type="text" id="wurl" value="https://mec.vn/"></label>
    <label for="h1"><span>Header 1: </span><input type="text" id="h1" value="Vietnam"></label>
    <label for="h2"><span>Header 2: </span><input type="text" id="h2" value="office"></label>
-   <label for="n"><span>Number(2): </span><input type="text" id="n" value="+84 24 3762954 / 55/ 56"></label>
+   <label for="n"><span>Number(s): </span><input type="text" id="n" value="+84 24 3762954 / 55/ 56"></label>
    <label for="a1"><span>Address 1: </span><input type="text" id="a1"
          value="6th floor, Building 18/4, No.8 Pham Hung St."></label>
    <label for="a2"><span>Address 2: </span><input type="text" id="a2" value="Cau Giay, Ha Noi, Vietnam"></label>
@@ -90,7 +90,8 @@
                            <tbody>
                               <tr>
                                  <td style="font-size: 22px">
-                                    <span style="color:#ba003b;font-weight: 600;">${_('#h1').value}</span><span style="color:#777777;"> ${_('#h2').value}<br /></span>
+                                    <span style="color:#ba003b;font-weight: 600;">${_('#h1').value}</span>
+                                    ${_('#h2').value != "" ? '<span style="color:#777777">' + _('#h2').value + '</span>' : ""}
                                  </td>
                               </tr>
                               <tr>
@@ -103,7 +104,7 @@
                                     <span style="color: #ba003b;font-weight:600">a</span><span>: </span>
                                     <div style="color:#5c5c5c;margin-left:5px">
                                        <span>${_('#a1').value}</span><br />
-                                       <span>${_('#a2').value}</span>
+                                       ${_('#a2').value != "" ? "<span>" + _('#a2').value + "</span>" : ""}
                                     </div>
                                  </td>
                               </tr>
