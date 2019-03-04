@@ -94,6 +94,12 @@
                                     ${_('#h2').value != "" ? '<span style="color:#777777">' + _('#h2').value + '</span>' : ""}
                                  </td>
                               </tr>
+                              ${_('#name').value != "" ? `<tr>
+                                 <td style="padding-top:15px">
+                                    <span style="font-size: 18px;font-weight:600;color:#0066ca">${_('#name').value}</span>
+                                    <span style="font-ize:14px;color:#5c5c5c"> ${_('#pos').value}</span>
+                                 </td>
+                              </tr>` : ""}
                               <tr>
                                  <td style="font-size: 18px;color:#444444;padding-top:15px">
                                     <span style="color: #ba003b;font-weight:600">t</span><span>:</span><span style="color:#5c5c5c;margin-left:5px">${_('#n').value}</span>
