@@ -1,59 +1,120 @@
 <html>
-   <body>
-      <table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
-         <colgroup>
-            <col width="280px">
-            <col width="400px">
-         </colgroup>
-         <tbody>
-            <tr>
-               <td style="border-right: 2px solid;border-right-color: #ba003b;" align="center">
-                  <table cellpadding="0" cellsacing="0">
-                     <tbody>
-                        <tr>
-                           <td>
-                              <img alt="photograph" style="border:0;height:auto;width: 250px;" src="https://1.bp.blogspot.com/--J6ruyjKUa4/XHStIPSVUEI/AAAAAAAAIqE/Doz0khHdwAgMQxN7PqC6gi2EpRqRgcPhgCLcBGAs/s1600/logo.jpg"/>
-                           </td>
-                        </tr>
-                        <tr style="text-align:right;font-size:22px;letter-spacing: 3px;">
-                           <td style="padding-right:9px"><a href="https://mec.vn/" target="_blank" style="text-decoration:none;color: #5c5c5c">www.mec.vn</a></td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </td>
-               <td style="padding-left:20px">
-                  <table cellpadding="0" cellspacing="0">
-                     <tbody>
-                        <tr>
-                           <td style="font-size: 22px">
-                              <span style="color:#ba003b;font-weight: 600;">Vietnam</span><span style="color:#777777;"> office<br /></span>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td style="font-size: 18px;color:#444444;padding-top:15px">
-                              <span style="color: #ba003b;font-weight:600">t</span><span>:</span><span style="color:#5c5c5c;margin-left:5px">+84 24 3762954 / 55/ 56</span>
-                           </td>
-                        </tr>
-						<tr>
-							<td style="display:flex;font-size:18px;padding-top:15px">
-								<span style="color: #ba003b;font-weight:600">a</span><span>: </span>
-								<div style="color:#5c5c5c;margin-left:5px">
-									<span>6th floor, Building 18/4, No.8 Pham Hung St.,</span><br />
-									<span>Cau Giay, Ha Noi, Vietnam</span>
-								</div>
-							</td>
-						</tr>
-                        <tr>
-                           <td style="padding-top:15px">
-                              <a href="https://www.facebook.com/mecinternational.ltd" target="_blank" rel="noopener"><img alt="facebook icon" style="border:0;height: 35px;width: 35px;" src="https://3.bp.blogspot.com/-r_aB2XUpV8c/XHS-1frUEpI/AAAAAAAAIqg/tZg8nBMuxwUkijmEvsX0GCBTqjHArcDKACLcBGAs/s1600/facebook_circle-128.png"/></a>
-                              <a style="margin-left:10px;" href="https://www.linkedin.com/company/mecinternationalltd/" target="_blank" rel="noopener"><img alt="linkedin icon" style="border:0;height: 35px;width: 35px;" src="https://4.bp.blogspot.com/-NJYXdwpsQNk/XHS-1JhgHaI/AAAAAAAAIqc/1LExPslJD2wAOh-uzDPjOiBifoB0YtP0QCLcBGAs/s1600/linkedin-128.png"/></a>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </td>
-            </tr>
-         </tbody>
-      </table>
-   </body>
+
+<head>
+   <style>
+      label {
+         display: block;
+         position: relative;
+         padding-left: 120px;
+         margin: 5px;
+      }
+
+      label>span {
+         position: absolute;
+         left: 0;
+         font-weight: bold;
+      }
+
+      input {
+         border-radius: 5px;
+         height: 35px;
+         width: 100%;
+         padding: 5px 15px;
+      }
+
+      button {
+         margin: 10px;
+         padding: 10px;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+      }
+
+      button:hover {
+         background-color: #ccc;
+      }
+   </style>
+</head>
+
+<body>
+   <label for="img"><span>Logo: </span><input type="url" id="img"
+         value="https://1.bp.blogspot.com/--J6ruyjKUa4/XHStIPSVUEI/AAAAAAAAIqE/Doz0khHdwAgMQxN7PqC6gi2EpRqRgcPhgCLcBGAs/s1600/logo.jpg"></label>
+   <label for="wname"><span>Website Name: </span><input type="text" id="wname" value="www.mec.vn"></label>
+   <label for="wurl"><span>Website Url: </span><input type="text" id="wurl" value="https://mec.vn/"></label>
+   <label for="h1"><span>Header 1: </span><input type="text" id="h1" value="Vietnam"></label>
+   <label for="h2"><span>Header 2: </span><input type="text" id="h2" value="office"></label>
+   <label for="n"><span>Number(2): </span><input type="text" id="n" value="+84 24 3762954 / 55/ 56"></label>
+   <label for="a1"><span>Address 1: </span><input type="text" id="a1"
+         value="6th floor, Building 18/4, No.8 Pham Hung St."></label>
+   <label for="a2"><span>Address 2: </span><input type="text" id="a2" value="Cau Giay, Ha Noi, Vietnam"></label>
+   <label for="f"><span>Facebook: </span><input type="url" id="f"
+         value="https://www.facebook.com/mecinternational.ltd"></label>
+   <label for="l"><span>Linkedin: </span><input type="url" id="l"
+         value="https://www.linkedin.com/company/mecinternationalltd/"></label>
+   <hr>
+   <label for="name"><span>Name: </span><input type="text" id="name"></label>
+   <label for="pos"><span>Position: </span><input type="text" id="pos"></label>
+   <center><button type="button" onclick="generate()">Click Me!</button></center>
+   <script>
+      function _(el) { return document.querySelector(el) }
+      function generate() {
+         document.querySelector("body").innerHTML =
+            `<table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
+               <colgroup>
+                  <col width="280px">
+                  <col width="400px">
+               </colgroup>
+               <tbody>
+                  <tr>
+                     <td style="border-right: 2px solid;border-right-color: #ba003b;" align="center">
+                        <table cellpadding="0" cellsacing="0">
+                           <tbody>
+                              <tr>
+                                 <td>
+                                    <img alt="photograph" style="border:0;height:auto;width: 250px;" src="${_('#img').value}"/>
+                                 </td>
+                              </tr>
+                              <tr style="text-align:right;font-size:22px;letter-spacing: 3px;">
+                                 <td style="padding-right:9px"><a href="${_('#wurl').value}" target="_blank" style="text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </td>
+                     <td style="padding-left:20px">
+                        <table cellpadding="0" cellspacing="0">
+                           <tbody>
+                              <tr>
+                                 <td style="font-size: 22px">
+                                    <span style="color:#ba003b;font-weight: 600;">${_('#h1').value}</span><span style="color:#777777;"> ${_('#h2').value}<br /></span>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="font-size: 18px;color:#444444;padding-top:15px">
+                                    <span style="color: #ba003b;font-weight:600">t</span><span>:</span><span style="color:#5c5c5c;margin-left:5px">${_('#n').value}</span>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="display:flex;font-size:18px;padding-top:15px">
+                                    <span style="color: #ba003b;font-weight:600">a</span><span>: </span>
+                                    <div style="color:#5c5c5c;margin-left:5px">
+                                       <span>${_('#a1').value}</span><br />
+                                       <span>${_('#a2').value}</span>
+                                    </div>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="padding-top:15px">
+                                    <a href="${_('#f').value}" target="_blank" rel="noopener"><img alt="facebook icon" style="border:0;height: 35px;width: 35px;" src="https://3.bp.blogspot.com/-r_aB2XUpV8c/XHS-1frUEpI/AAAAAAAAIqg/tZg8nBMuxwUkijmEvsX0GCBTqjHArcDKACLcBGAs/s1600/facebook_circle-128.png"/></a>
+                                    <a style="margin-left:10px;" href="${_('#l').value}" target="_blank" rel="noopener"><img alt="linkedin icon" style="border:0;height: 35px;width: 35px;" src="https://4.bp.blogspot.com/-NJYXdwpsQNk/XHS-1JhgHaI/AAAAAAAAIqc/1LExPslJD2wAOh-uzDPjOiBifoB0YtP0QCLcBGAs/s1600/linkedin-128.png"/></a>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>`
+      }
+   </script>
+</body>
+
 </html>
