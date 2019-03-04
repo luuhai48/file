@@ -53,7 +53,7 @@
    <label for="h2"><span>Header 2: </span><input type="text" id="h2" value="office"></label>
    <label for="n"><span>Number(s): </span><input type="text" id="n" value="+84 24 3762954 / 55/ 56"></label>
    <label for="a1"><span>Address 1: </span><input type="text" id="a1"
-         value="6th floor, Building 18/4, No.8 Pham Hung St."></label>
+         value="6th floor, Building 18/4, No.8 Pham Hung St.,"></label>
    <label for="a2"><span>Address 2: </span><input type="text" id="a2" value="Cau Giay, Ha Noi, Vietnam"></label>
    <label for="f"><span>Facebook: </span><input type="url" id="f"
          value="https://www.facebook.com/mecinternational.ltd"></label>
@@ -80,21 +80,21 @@
                                     <img alt="photograph" style="border:0;height:auto;width: 250px;" src="${_('#img').value}"/>
                                  </td>
                               </tr>
-                              <tr style="text-align:right;font-size:22px;letter-spacing: 3px;">
-                                 <td style="padding-right:9px"><a href="${_('#wurl').value}" target="_blank" style="text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td>
-                              </tr>
+                              ${_('#wname').value != "" ? `<tr style="text-align:right;font-size:22px;letter-spacing: 3px;">
+                                 <td style="padding-right:9px"><a ${_('#wurl').value != "" ? 'href="' + _('#wurl').value + '"' : ''} target="_blank" style="text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td>
+                              </tr>` : ""}
                            </tbody>
                         </table>
                      </td>
                      <td style="padding-left:20px">
                         <table cellpadding="0" cellspacing="0">
                            <tbody>
-                              <tr>
+                              ${_('#h1').value != "" ? `<tr>
                                  <td style="font-size:18px;color:#5c5c5c">
                                     <span style="color:#ba003b;font-weight:600;font-size:22px">${_('#h1').value}</span>
                                     ${_('#h2').value != "" ? '<span>' + _('#h2').value + '</span>' : ""}<br>
                                  </td>
-                              </tr>
+                              </tr>` : ""}
                               ${_('#name').value != "" ? `<tr>
                                  <td style="padding-top:15px;font-size:18px">
                                     <span style="color:#ba003b;font-weight:600">${_('#name').value}</span><span> / </span>
