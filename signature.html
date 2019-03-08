@@ -67,7 +67,7 @@
          document.querySelector("body").innerHTML =
             `<table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
                <colgroup>
-                  <col width="220px">
+                  <col width="160px">
                   <col width="400px">
                </colgroup>
                <tbody>
@@ -77,10 +77,10 @@
                            <tbody>
                               <tr>
                                  <td>
-                                    <img alt="logo" style="border:0;height:auto;width: 210px;" src="${_('#img').value}"/>
+                                    <img alt="logo" style="border:0;height:auto;width: 150px;" src="${_('#img').value}"/>
                                  </td>
                               </tr>
-                              ${_('#wname').value != "" ? `<tr style="text-align:right;font-size:22px;letter-spacing: 3px;">
+                              ${_('#wname').value != "" ? `<tr style="text-align:right;font-size:20px;letter-spacing: 2px;">
                                  <td style="padding-right:9px"><a ${_('#wurl').value != "" ? 'href="' + _('#wurl').value + '"' : ''} target="_blank" style="text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td>
                               </tr>` : ""}
                            </tbody>
