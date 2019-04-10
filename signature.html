@@ -68,7 +68,7 @@
             `<table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
                <colgroup>
                   <col width="330px">
-                  <col width="160px">
+                  <col>
                </colgroup>
                <tbody>
                   <tr>
@@ -99,9 +99,9 @@
                                     </div>
                                  </td>
                               </tr>
-                              ${_('#wname').value != "" ? `<tr><td style="font-size:15px;padding-top:3px"><span style="color: #ba003b;font-weight:600">w</span><span>: </span><a ${_('#wurl').value != "" ? 'href="' + _('#wurl').value + '"' : ''} target="_blank" style="font-size:18px;text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td></tr>` : ""}
+                              ${_('#wname').value != "" ? `<tr><td style="font-size:15px"><span style="color: #ba003b;font-weight:600">w</span><span>: </span><a ${_('#wurl').value != "" ? 'href="' + _('#wurl').value + '"' : ''} target="_blank" style="font-size:18px;text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td></tr>` : ""}
                               <tr>
-                                 <td style="padding-top:3px">
+                                 <td style="padding-top:5px">
                                     <a href="${_('#f').value}" target="_blank" rel="noopener"><img alt="facebook icon" style="border:0;height: 30px;width: 30px;" src="https://3.bp.blogspot.com/-r_aB2XUpV8c/XHS-1frUEpI/AAAAAAAAIqg/tZg8nBMuxwUkijmEvsX0GCBTqjHArcDKACLcBGAs/s1600/facebook_circle-128.png"/></a>
                                     <a style="margin-left:10px;" href="${_('#l').value}" target="_blank" rel="noopener"><img alt="linkedin icon" style="border:0;height: 30px;width: 30px;" src="https://4.bp.blogspot.com/-NJYXdwpsQNk/XHS-1JhgHaI/AAAAAAAAIqc/1LExPslJD2wAOh-uzDPjOiBifoB0YtP0QCLcBGAs/s1600/linkedin-128.png"/></a>
                                  </td>
@@ -113,7 +113,7 @@
                         <table cellpadding="0" cellsacing="0">
                            <tbody>
                               <tr>
-                                 <td>
+                                 <td style="padding-left:10px">
                                     <img alt="logo" style="border:0;height:auto;width: 150px" src="${_('#img').value}"/>
                                  </td>
                               </tr>
