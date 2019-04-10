@@ -67,31 +67,31 @@
          document.querySelector("body").innerHTML =
             `<table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
                <colgroup>
-                  <col width="350px">
-                  <col width="180px">
+                  <col width="330px">
+                  <col width="160px">
                </colgroup>
                <tbody>
                   <tr>
-                     <td style="border-right: 2px solid;border-right-color: #ba003b;" align="center">
+                     <td style="padding-right: 5px" align="center">
                         <table cellpadding="0" cellspacing="0">
                            <tbody>
                               ${_('#h1').value != "" ? `<tr>
-                                 <td style="font-size:16px;color:#5c5c5c">
-                                    <span style="color:#ba003b;font-weight:600;font-size:20px">${_('#h1').value}</span>
+                                 <td style="font-size:15px;color:#5c5c5c">
+                                    <span style="color:#ba003b;font-weight:600;font-size:18px">${_('#h1').value}</span>
                                     ${_('#h2').value != "" ? '<span>' + _('#h2').value + '</span>' : ""}<br>
                                  </td>
                               </tr>` : ""}
                               ${_('#name').value != "" ? `<tr>
-                                 <td style="padding-top:10px;font-size:16px">
+                                 <td style="padding-top:10px;font-size:15px">
                                     <span style="color:#ba003b;font-weight:600">${_('#name').value}</span><span> / </span>
                                     <span style="color:#5c5c5c;font-size:14px">${_('#pos').value}</span></td></tr>` : ""}
                               <tr>
-                                 <td style="font-size: 16px;color:#444444;padding-top:10px">
+                                 <td style="font-size: 15px;color:#444444;padding-top:10px">
                                     <span style="color: #ba003b;font-weight:600">t</span><span>:</span><span style="color:#5c5c5c;margin-left:5px">${_('#n').value}</span>
                                  </td>
                               </tr>
                               <tr>
-                                 <td style="display:flex;font-size:16px;padding-top:10px">
+                                 <td style="display:flex;font-size:15px;padding-top:10px">
                                     <span style="color: #ba003b;font-weight:600">a</span><span>: </span>
                                     <div style="color:#5c5c5c;margin-left:5px">
                                        <span>${_('#a1').value}</span><br />
@@ -113,7 +113,7 @@
                            <tbody>
                               <tr>
                                  <td>
-                                    <img alt="logo" style="border:0;height:auto;width: 170px;" src="${_('#img').value}"/>
+                                    <img alt="logo" style="border:0;height:auto;width: 150px;border-left: 2px solid #ba003b;" src="${_('#img').value}"/>
                                  </td>
                               </tr>
                               ${_('#wname').value != "" ? `<tr style="text-align:right;font-size:18px;letter-spacing: 2px;">
