@@ -1,130 +1,122 @@
-<html>
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-   <style>
-      label {
-         display: block;
-         position: relative;
-         padding-left: 120px;
-         margin: 5px;
+   <meta name="viewport" content="width=device-width">
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <style type="text/css">
+      @media only screen and (max-width:480px) {
+         .footer td {
+            font-size: 12px !important
+         }
+
+         .footer__main__col1 {
+            width: 100% !important
+         }
+
+         .footer__main__col2 {
+            width: 100% !important
+         }
+
+         .footer__main__col2__td {
+            text-align: left;
+            padding-bottom: 20px;
+            padding: 0 !important
+         }
+
+         .footer__main__col2__td__img {
+            padding-left: 0 !important
+         }
+
+         .gray-hr hr {
+            margin-bottom: 10px !important;
+            margin-top: 10px !important
+         }
       }
 
-      label>span {
-         position: absolute;
-         left: 0;
-         font-weight: bold;
-      }
+      @media only screen and (min-width:1025px) {
+         .body-with-bg {
+            background-color: #f1f1f1
+         }
 
-      input {
-         border-radius: 5px;
-         height: 30px;
-         width: 100%;
-         padding: 5px 15px;
-         border: 1px solid;
-      }
+         .body-with-bg .main {
+            border: 1px solid #e9e9e9 !important;
+            max-width: 960px;
+            margin: 0 auto
+         }
 
-      button {
-         margin: 10px;
-         padding: 10px;
-         border: 1px solid #ccc;
-         border-radius: 5px;
-      }
-
-      button:hover {
-         cursor: pointer;
-         background-color: #ccc;
-      }
-
-      hr {
-         margin: 10px 0
+         .background {
+            padding: 30px;
+            background-color: #f1f1f1
+         }
       }
    </style>
 </head>
 
-<body>
-   <label for="name"><span>Name: </span><input type="text" id="name" autofocus></label>
-   <label for="pos"><span>Position: </span><input type="text" id="pos"></label>
-   <hr>
-   <label for="img"><span>Logo: </span><input type="url" id="img"
-         value="https://1.bp.blogspot.com/--J6ruyjKUa4/XHStIPSVUEI/AAAAAAAAIqE/Doz0khHdwAgMQxN7PqC6gi2EpRqRgcPhgCLcBGAs/s1600/logo.jpg"></label>
-   <label for="wname"><span>Website Name: </span><input type="text" id="wname" value="www.mec.vn"></label>
-   <label for="wurl"><span>Website Url: </span><input type="text" id="wurl" value="https://mec.vn/"></label>
-   <label for="h1"><span>Header 1: </span><input type="text" id="h1" value="Vietnam"></label>
-   <label for="h2"><span>Header 2: </span><input type="text" id="h2" value="office"></label>
-   <label for="n"><span>Number(s): </span><input type="text" id="n" value="+84 24 3762954 / 55/ 56"></label>
-   <label for="a1"><span>Address 1: </span><input type="text" id="a1"
-         value="6th floor, Building 18-4, No.8 Pham Hung St.,"></label>
-   <label for="a2"><span>Address 2: </span><input type="text" id="a2" value="Cau Giay, Ha Noi, Vietnam"></label>
-   <label for="f"><span>Facebook: </span><input type="url" id="f"
-         value="https://www.facebook.com/mecinternational.ltd"></label>
-   <label for="l"><span>Linkedin: </span><input type="url" id="l"
-         value="https://www.linkedin.com/company/mecinternationalltd/"></label>
-
-   <center><button type="button" onclick="generate()">Click Me!</button></center>
-   <script>
-      function _(el) { return document.querySelector(el) }
-      function generate() {
-         document.querySelector("body").innerHTML =
-            `<table style="font-family: Lato, sans-serif;" cellpadding="0" cellspacing="0">
-               <colgroup>
-                  <col width="325px">
-                  <col>
-               </colgroup>
-               <tbody>
-                  <tr>
-                     <td style="padding-right: 5px;border-right:2px solid #ba003b" align="center">
-                        <table cellpadding="0" cellspacing="0">
-                           <tbody>
-                              ${_('#h1').value != "" ? `<tr>
-                                 <td style="font-size:15px;color:#5c5c5c">
-                                    <span style="color:#ba003b;font-weight:600;font-size:18px">${_('#h1').value}</span>
-                                    ${_('#h2').value != "" ? '<span>' + _('#h2').value + '</span>' : ""}<br>
-                                 </td>
-                              </tr>` : ""}
-                              ${_('#name').value != "" ? `<tr>
-                                 <td style="padding-top:3px;font-size:15px">
-                                    <span style="color:#ba003b;font-weight:600">${_('#name').value}</span><span> / </span>
-                                    <span style="color:#5c5c5c;font-size:14px">${_('#pos').value}</span></td></tr>` : ""}
-                              <tr>
-                                 <td style="font-size: 15px;color:#444444;padding-top:3px">
-                                    <span style="color: #ba003b;font-weight:600">t</span><span>:</span><span style="color:#5c5c5c;margin-left:5px">${_('#n').value}</span>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td style="display:flex;font-size:15px;padding-top:3px">
-                                    <span style="color: #ba003b;font-weight:600">a</span><span>: </span>
-                                    <div style="color:#5c5c5c;margin-left:5px">
-                                       <span>${_('#a1').value}</span><br />
-                                       ${_('#a2').value != "" ? "<span>" + _('#a2').value + "</span>" : ""}
-                                    </div>
-                                 </td>
-                              </tr>
-                              ${_('#wname').value != "" ? `<tr><td style="font-size:15px"><span style="color: #ba003b;font-weight:600">w</span><span>: </span><a ${_('#wurl').value != "" ? 'href="' + _('#wurl').value + '"' : ''} target="_blank" style="font-size:18px;text-decoration:none;color: #5c5c5c">${_('#wname').value}</a></td></tr>` : ""}
-                              <tr>
-                                 <td style="padding-top:5px">
-                                    <a href="${_('#f').value}" target="_blank" rel="noopener"><img alt="facebook icon" style="border:0;height: 30px;width: 30px;" src="https://3.bp.blogspot.com/-r_aB2XUpV8c/XHS-1frUEpI/AAAAAAAAIqg/tZg8nBMuxwUkijmEvsX0GCBTqjHArcDKACLcBGAs/s1600/facebook_circle-128.png"/></a>
-                                    <a style="margin-left:10px;" href="${_('#l').value}" target="_blank" rel="noopener"><img alt="linkedin icon" style="border:0;height: 30px;width: 30px;" src="https://4.bp.blogspot.com/-NJYXdwpsQNk/XHS-1JhgHaI/AAAAAAAAIqc/1LExPslJD2wAOh-uzDPjOiBifoB0YtP0QCLcBGAs/s1600/linkedin-128.png"/></a>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </td>
-                     <td>
-                        <table cellpadding="0" cellsacing="0">
-                           <tbody>
-                              <tr>
-                                 <td style="padding-left:5px">
-                                    <img alt="logo" style="border:0;height:auto;width: 150px" src="${_('#img').value}"/>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </td>
-                  </tr>
-               </tbody>
-            </table>`
-      }
-   </script>
+<body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none;"><br>
+   <table class="main rbcc" style="border: 0; cellpadding: 0; cellspacing: 0; max-width: 410px;" border="0"
+      cellpadding="0" cellspacing="0" bgcolor="#ffffff" width="100%">
+      <tr class="rbcc"
+         style="-webkit-box-sizing: border-box; border: 0; box-sizing: border-box; cellpadding: 0; cellspacing: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px;">
+         <td class="footer" style="color: #888; padding-bottom: 10px;" bgcolor="#fff">
+            <table class="rbcc footer__main" style="border: 0; cellpadding: 0; cellspacing: 0;" border="0"
+               cellpadding="0" cellspacing="0" width="100%">
+               <tr
+                  style="-webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px;">
+                  <td class="footer__main__signature" align="left"
+                     style="align: left; color: #0066cc; font-size: 18px;"><b>MEC International</b><br></td>
+               </tr>
+               <tr class="gray-hr"
+                  style="-webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px;">
+                  <td width="100%">
+                     <hr class="gray-hr"
+                        style="background: transparent; border-bottom: 1px solid #E4E4E4; border-top: none; color: transparent; margin-bottom: 10px; margin-top: 10px;">
+                  </td>
+               </tr>
+               <tr
+                  style="-webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px;">
+                  <table class="rbcc footer__main__col1" align="left"
+                     style="align: left; border: 0; cellpadding: 0; cellspacing: 0;" border="0" cellpadding="0"
+                     cellspacing="0" width="64%">
+                     <td class="footer__main__col1__td" align="left" style="align: left; color: #888; font-size: 14px;">
+                        <span style="color:#ba003b;font-size:20px;font-weight:600">Vietnam</span> <span
+                           style="color:#5c5c5c;">office</span><br><span
+                           style="color:#ba003b;font-weight:600">a</span><span>:</span><span
+                           style="color:#5c5c5c;margin-left:5px">6th floor, Building 18/4,</span><br><span
+                           style="color:#5c5c5c;margin-left:17px">No.8 Pham Hung St.,</span><br><span
+                           style="color:#5c5c5c;margin-left:17px">Cau Giay, Ha Noi, Viet Nam</span><br><span
+                           style="color:#ba003b;font-weight:600">t</span><span>:</span><span
+                           style="color:#5c5c5c;margin-left:5px">+84 24 37629 54 /55 /56</span><br><span
+                           style="color:#ba003b;font-weight:600">w</span><span>:</span><a
+                           style="color: #5c5c5c; margin-left: 5px; text-decoration: none;"
+                           href="https://mec.vn">www.mec.vn</a></td>
+                  </table>
+                  <table class="rbcc footer__main__col2" align="right"
+                     style="align: right; border: 0; cellpadding: 0; cellspacing: 0;" border="0" cellpadding="0"
+                     cellspacing="0" width="36%">
+                     <td class="footer__main__col2__td" align="right"
+                        style="align: right; border-left: 2px solid #ba003b; color: #888; font-size: 14px; padding: 26px 0;">
+                        <a href="https://mec.vn" style="color: #888; text-decoration: none;"><img
+                              src="https://1.bp.blogspot.com/--J6ruyjKUa4/XHStIPSVUEI/AAAAAAAAIqE/Doz0khHdwAgMQxN7PqC6gi2EpRqRgcPhgCLcBGAs/s1600/logo.jpg"
+                              alt="MEC International" class="footer__main__col2__td__img"
+                              style="border: 0; height: 70px; max-width: 100%;"></a></td>
+                  </table>
+               </tr>
+               <tr
+                  style="-webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px;">
+                  <td><a href="https://www.facebook.com/mecinternational.ltd"
+                        style="color: #888; text-decoration: none;"><img
+                           src="https://3.bp.blogspot.com/-mKNagVyP3Lg/XK7kgof0pnI/AAAAAAAAIsY/meD7XG48NwAWA4jmnlRK4HWgY4AupGjtQCLcBGAs/s1600/fb.png"
+                           class="footer__main__logo" style="height: 30px; max-width: 100%;"></a> <a href="undefined"
+                        style="color: #888; text-decoration: none;"><img
+                           src="https://2.bp.blogspot.com/-e9Y25BTsE84/XK7kgs4ycFI/AAAAAAAAIsc/EKGO5xGH8NgSitGcZgolpNKH3KlTPxSSACLcBGAs/s1600/linkedin.png"
+                           class="footer__main__logo" style="height: 30px; max-width: 100%;"></a></td>
+               </tr>
+            </table>
+         </td>
+      </tr>
+   </table>
 </body>
 
 </html>
