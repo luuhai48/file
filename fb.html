@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FB API</title>
+</head>
+
+<body>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: 'mecinternational.ltd',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v4.0'
+            });
+            FB.api('/me', function (response) {
+                alert('Your name is ' + response.name);
+                alert('Your id is ' + response.id);
+            });
+        };
+    </script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+</body>
+
+</html>
