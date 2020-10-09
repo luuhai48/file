@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      0.1
+// @version      0.2
 // @description  Auto authentication using Bearer token on startup
 // @author       hai.luu
 // @match        http://localhost/*
