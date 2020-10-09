@@ -32,6 +32,10 @@
             originalLogout = window.ui.authActions.logout;
 
         window.ui.authActions.authorize = function (payload) {
+            payload.Bearer.value = payload.Bearer.value.replace("bearer ", "Bearer ");
+            if (!payload.Bearer.value.includes("Bearer")) {
+                payload.Bearer.value = `Bearer ${payload.Bearer.value}`;
+            }
             window.localStorage.setItem(api_key, payload.Bearer.value);
             return originalAuthorize(payload);
         };
