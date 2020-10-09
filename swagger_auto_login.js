@@ -5,6 +5,8 @@
 // @description  Auto authentication using Bearer token on startup
 // @author       hai.luu
 // @match        http://localhost/*
+// @match        127.0.0.1/*
+// @match        0.0.0.0/*
 // @match        https://*.canteccouriers.com/*
 // @grant none
 // @run-at document-idle
