@@ -10,7 +10,49 @@
 // @match        https://*.canteccouriers.com/*
 // @grant none
 // @run-at document-idle
+// @require https://cdn.jsdelivr.net/npm/jwt-decode@3.0.0/build/jwt-decode.js
 // ==/UserScript==
+
+const addStyle = (css) => {
+    var head, style;
+    head = document.getElementsByTagName('head')[0];
+    if (!head) { return; }
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = css;
+    head.appendChild(style);
+}
+const _$ = (parent, selector) => {
+    return parent.querySelector(selector);
+}
+
+const requests = async (url = '', data = {}, method = 'POST') => {
+  const response = await fetch(url, {
+    method: ['GET', 'POST', 'PUT', 'DELETE', 'PATH'].indexOf(method.toUpperCase()) > -1 ? method.toUpperCase() : 'GET' , // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data)
+  });
+  return response.json();
+}
+
+const find_key = (obj, key) => {
+    for (let k in obj) {
+        if (k === key) {
+            return obj[k];
+        }
+        if (typeof obj[k] === "object") {
+            return find_key(obj[k], key);
+        }
+    }
+}
 
 (function() {
     'use strict';
@@ -22,16 +64,6 @@
         }
 
         console.log('%cSwagger Auto Login Is Running', 'color: white;background:red;font-size:22px');
-
-        const addStyle = (css) => {
-            var head, style;
-            head = document.getElementsByTagName('head')[0];
-            if (!head) { return; }
-            style = document.createElement('style');
-            style.type = 'text/css';
-            style.innerHTML = css;
-            head.appendChild(style);
-        }
 
         var urlpath = window.location.pathname,
             key_prefix = "";
@@ -56,7 +88,9 @@
             return originalLogout(payload);
         };
 
-        addStyle(`.sal--btn{color:white;background:red;outline:none;border:none;border-radius:3px;padding:5px;cursor:pointer;}
+        addStyle(`.sal--btn{outline:none;border:none;border-radius:3px;padding:5px;cursor:pointer;}
+.sal--btn.danger{color:white;background:red;}
+.sal--btn.success{color:white;background:#4CAF50;}
 .sal--box{position:fixed;top:20px;right:20px;z-index:99999;}
 .sal--box-content{position:absolute;top:calc(100% + 5px);right:0;background:white;color:black;border-radius:3px;padding:10px 15px;border:1px solid #ccc;display:none;}
 .sal--block{display:block !important;}
@@ -65,79 +99,128 @@
 .sal--autorefresh{padding-left:5px;}
 .sal--autorefresh input[type="checkbox"]{float:left;}`);
 
-        var toggle_button = document.createElement("button"),
-            box = document.createElement("div"),
-            box_content = document.createElement("div"),
-            url_input = document.createElement("input"),
-            email_input = document.createElement("input"),
-            password_input = document.createElement("input"),
-            submit_button = document.createElement("button"),
-            auto_refresh = document.createElement("input"),
-            label = document.createElement("label");
-
-        const url_value = window.localStorage.getItem(`${key_prefix}url`),
+        var login_url_value = window.localStorage.getItem(`${key_prefix}loginurl`),
+              refresh_url_value = window.localStorage.getItem(`${key_prefix}refreshurl`),
               email_value = window.localStorage.getItem(`${key_prefix}email`),
               password_value = window.localStorage.getItem(`${key_prefix}password`),
               autorefresh_value = window.localStorage.getItem(`${key_prefix}autorefresh`);
 
+        var box = document.createElement("div");
         box.classList.add("sal--box");
-        toggle_button.classList.add("sal--btn");
-        toggle_button.textContent = "Auto Login";
-        box_content.classList.add("sal--box-content");
+        box.innerHTML = `<button class="sal--btn" id="toggle_btn">SAL</button>
+<div class="sal--box-content">
+    <form>
+        <input class="sal--input" placeholder="Login URL" value="${login_url_value || ''}" id="login_url_input" required="true">
+        <input class="sal--input" placeholder="Refresh URL" value="${refresh_url_value || ''}" id="refresh_url_input" required="true">
+        <input class="sal--input" type="email" placeholder="Email" value="${email_value || ''}" id="email_input" required="true">
+        <input class="sal--input" type="password" placeholder="Password" value="${password_value || ''}" id="password_input" required="true">
+        <label><input type="checkbox" checked="${autorefresh_value || 'false'}" id="autorefresh_input">Auto Refresh</label>
+        <button class="sal--btn-submit" type="submit">Save & Refresh</button>
+    </form>
+</div>`;
 
-        url_input.placeholder = "URL";
-        url_input.classList.add("sal--input");
-        email_input.type = "email";
-        email_input.placeholder = "Email";
-        email_input.classList.add("sal--input");
-        password_input.type = "password";
-        password_input.placeholder = "Password";
-        password_input.classList.add("sal--input");
-        submit_button.classList.add("sal--btn-submit");
-        submit_button.textContent = "Save & Refresh";
-        auto_refresh.type = "checkbox";
-        label.textContent = "Auto Refresh";
-        label.classList.add("sal--autorefresh");
-        label.appendChild(auto_refresh);
-        box_content.append(url_input, email_input, password_input, label, submit_button);
+        var toggle_button = _$(box, "#toggle_btn"),
+            box_content = _$(box, ".sal--box-content"),
+            login_url_input = _$(box, "#login_url_input"),
+            refresh_url_input = _$(box, "#refresh_url_input"),
+            email_input = _$(box, "#email_input"),
+            password_input = _$(box, "#password_input"),
+            form = _$(box, "form"),
+            autorefresh_input = _$(box, "#autorefresh_input");
 
-        if (url_value) {
-            url_input.value = url_value;
-        }
-        if (email_value) {
-            email_input.value = email_value;
-        }
-        if (password_value) {
-            password_input.value = password_value;
+        for (let input in ["login_url", "refresh_url", "email", "password"]) {
+            if (window[`${input}_value`]) {
+                window[`${input}_input`].value = window[`${input}_value`];
+            }
         }
         if (autorefresh_value) {
-            auto_refresh.checked = autorefresh_value === "true";
+            autorefresh_input.checked = autorefresh_value === "true";
         }
 
         toggle_button.onclick = () => {
             box_content.classList.toggle("sal--block");
-            url_input.focus();
+            login_url_input.focus();
         }
-        submit_button.onclick = () => {
-            window.localStorage.setItem(`${key_prefix}url`, url_input.value);
-            window.localStorage.setItem(`${key_prefix}email`, email_input.value);
-            window.localStorage.setItem(`${key_prefix}password`, password_input.value);
-            window.localStorage.setItem(`${key_prefix}autorefresh`, auto_refresh.checked);
+
+        const swagger_authorize = (token) => {
+            if (token) {
+                try {
+                    var decoded = jwt_decode(token); // eslint-disable-line
+                    let refresh_token = find_key(decoded, "refresh"),
+                        access_token = find_key(decoded, "access");
+                    if (!refresh_token && !access_token) {
+                        throw new Error("Failed to login");
+                    }
+                }
+                catch (err) {
+                    console.error(err);
+                    toggle_button.classList.add("danger");
+                    toggle_button.title = "Error: Failed to login";
+                    return;
+                }
+
+                const authorize = () => {
+                    let result = window.ui.preauthorizeApiKey("Bearer", token);
+                    if (result === null) {
+                        setTimeout(authorize, 300);
+                    }
+                };
+                authorize();
+            }
+        }
+
+        const login = (url, email, password) => {
+            let response = requests(url, {email, password}, "POST")
+            .then(data => {
+                try {
+                    let refresh_token = find_key(data, "refresh"),
+                        access_token = find_key(data, "access");
+                    if (!refresh_token && !access_token) {
+                        throw new Error("Failed to login");
+                    }
+
+                    window.localStorage.setItem(`${key_prefix}token`, access_token);
+                    window.localStorage.setItem(`${key_prefix}refresh`, refresh_token);
+                    window.ui.preauthorizeApiKey("Bearer", access_token);
+                    toggle_button.classList.add("success");
+
+                    swagger_authorize(access_token);
+                } catch (err) {
+                    console.error(err);
+                    toggle_button.classList.add("danger");
+                    toggle_button.title = "Error: Failed to login";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        }
+
+        form.onsubmit = (event) => {
+            event.preventDefault();
+            login_url_value = login_url_input.value;
+            refresh_url_value = refresh_url_input.value;
+            email_value = email_input.value;
+            password_value = password_input.value;
+            autorefresh_value = autorefresh_input.checked;
+            window.localStorage.setItem(`${key_prefix}loginurl`, login_url_value);
+            window.localStorage.setItem(`${key_prefix}refreshurl`, refresh_url_value);
+            window.localStorage.setItem(`${key_prefix}email`, email_value);
+            window.localStorage.setItem(`${key_prefix}password`, password_value);
+            window.localStorage.setItem(`${key_prefix}autorefresh`, autorefresh_value);
+
+            box_content.classList.remove("sal--block");
+            login(login_url_value, email_value, password_value);
         }
 
         box.append(toggle_button, box_content);
-
         document.body.appendChild(box);
 
-        const token = window.localStorage.getItem(`${key_prefix}token`);
-        if (token) {
-            const authorize = () => {
-                let result = window.ui.preauthorizeApiKey('Bearer', token);
-                if (result === null) {
-                    setTimeout(authorize, 300);
-                }
-            };
-            authorize();
+        var token = window.localStorage.getItem(`${key_prefix}token`);
+        if (!token && login_url_value && email_value && password_value) {
+            login(login_url_value, email_value, password_value);
+        } else if(token) {
+            swagger_authorize(token);
         }
     };
     init();
