@@ -191,6 +191,10 @@ const find_key = (obj, key) => {
                 }
 
                 const authorize = () => {
+                    token = token.replace("bearer ", "Bearer ");
+                    if (!token.includes("Bearer")) {
+                        token = `Bearer ${token}`;
+                    }
                     let result = window.ui.preauthorizeApiKey("Bearer", token);
                     if (result === null) {
                         return setTimeout(authorize, 300);
