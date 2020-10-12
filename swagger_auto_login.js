@@ -178,6 +178,7 @@ const find_key = (obj, key) => {
         const swagger_authorize = (token) => {
             if (token) {
                 try {
+                    token = token.replace("Bearer ", "");
                     var decoded = jwt_decode(token); // eslint-disable-line
                     window.token_exp = new Date(decoded.exp * 1000);
                     check_alive();
@@ -225,6 +226,7 @@ const find_key = (obj, key) => {
                     toggle_button.classList.remove("success", "danger");
                     toggle_button.classList.add("danger");
                     toggle_button.title = "Error: Failed to login";
+                    return;
                 }
             })
                 .catch(err => {
