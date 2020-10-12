@@ -139,14 +139,12 @@ const find_key = (obj, key) => {
         const refresh = (refresh) => {
             requests(refresh_url_value, {refresh}, "POST")
             .then(data => {
-                let refresh_token = find_key(data, "refresh"),
-                    access_token = find_key(data, "access");
-                if (!refresh_token && !access_token) {
-                    throw new Error("Failed to login");
+                let access_token = find_key(data, "access");
+                if (!access_token) {
+                    throw new Error("Failed to refresh");
                 }
 
                 window.localStorage.setItem(`${key_prefix}token`, access_token);
-                window.localStorage.setItem(`${key_prefix}refresh`, refresh_token);
                 window.ui.preauthorizeApiKey("Bearer", access_token);
 
                 swagger_authorize(access_token);
