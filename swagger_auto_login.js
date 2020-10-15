@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      0.3
+// @version      2.0
 // @description  Remember Swagger Bearer token
 // @author       hai.luu
 // @match        http://localhost/*
@@ -11,51 +11,37 @@
 // @grant none
 // @run-at document-idle
 // @require https://cdn.jsdelivr.net/npm/jwt-decode@3.0.0/build/jwt-decode.js
+// @require https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js
 // ==/UserScript==
 
-const addStyle = (css) => {
-    var head, style;
-    head = document.getElementsByTagName('head')[0];
-    if (!head) { return; }
-    style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = css;
-    head.appendChild(style);
+function _$(selector, parent = null) {
+    return parent ? parent.querySelector(selector) : document.querySelector(selector);
 }
-const _$ = (parent, selector) => {
-    return parent.querySelector(selector);
+function addStyle(cssText) {
+    _$("head").insertAdjacentHTML("beforeend", `<style>${cssText}</style>`);
 }
-
-const requests = async (url = '', data = {}, method = 'POST') => {
-  const response = await fetch(url, {
-    method: ['GET', 'POST', 'PUT', 'DELETE', 'PATH'].indexOf(method.toUpperCase()) > -1 ? method.toUpperCase() : 'GET' , // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
-  });
-  return response.json();
+function localGet(key) {
+    return window.localStorage.getItem(key);
 }
-
-const find_key = (obj, key) => {
-    for (let k in obj) {
+function localSet(key, val) {
+    window.localStorage.setItem(key, val);
+}
+function localRem(key) {
+    window.localStorage.removeItem(key);
+}
+function findKey(obj, key) {
+    let found;
+    JSON.stringify(obj, (k, v) => {
         if (k === key) {
-            return obj[k];
+            found = v;
         }
-        if (typeof obj[k] === "object") {
-            return find_key(obj[k], key);
-        }
-    }
+        return v;
+    });
+    return found;
 }
 
-(function() {
-    'use strict';
+(function () {
+    "use strict";
 
     const init = () => {
         if (window.ui === undefined) {
@@ -63,205 +49,185 @@ const find_key = (obj, key) => {
             return;
         }
 
-        console.log('%cSwagger Auto Login Is Running', 'color: white;background:red;font-size:22px');
+        console.log("%cSwagger-Auto-Login Is Running", "color:white;background:red;font-size:20px;");
 
-        var urlpath = window.location.pathname,
-            key_prefix = "";
-        if (urlpath.includes("/admin")) {
-            key_prefix = "admin_";
+        addStyle(
+            `.sal--btn{outline:0;border:1px solid #ccc;border-radius:3px;padding:5px;cursor:pointer}.sal--btn.danger{color:#fff;background:red}.sal--btn.success{color:#fff;background:#4caf50}.sal--box{position:fixed;top:20px;right:20px;z-index:99999}.sal--box-content{position:absolute;top:calc(100% + 5px);right:0;background:#fff;color:#000;border-radius:3px;padding:10px 15px;border:1px solid #ccc;display:none}.sal--block{display:block!important}.sal--input{box-sizing:border-box;padding:4px 6px;margin-bottom:5px;border:1px solid #ccc}.sal--btn-submit{display:block;outline:0;border:none;border-radius:3px;padding:5px;cursor:pointer;color:#fff;background:#000;margin-top:10px}.sal--autorefresh{padding-left:5px}.sal--autorefresh input[type=checkbox]{float:left}`
+        );
+
+        const key_prefix = window.location.pathname.includes("/admin") ? "admin_" : "",
+            keys = ["login_url", "refresh_url", "email", "password", "autorefresh"],
+            originalAuthorize = window.ui.authActions.authorize,
+            originalLogout = window.ui.authActions.logout,
+            box = document.createElement("div");
+
+        var data = {};
+        for (let key of keys) {
+            data[key] = localGet(`${key_prefix}${key}`);
         }
 
-        var originalAuthorize = window.ui.authActions.authorize,
-            originalLogout = window.ui.authActions.logout;
-
-        addStyle(`.sal--btn{outline:none;border:1px solid #ccc;border-radius:3px;padding:5px;cursor:pointer;}
-.sal--btn.danger{color:white;background:red;}
-.sal--btn.success{color:white;background:#4CAF50;}
-.sal--box{position:fixed;top:20px;right:20px;z-index:99999;}
-.sal--box-content{position:absolute;top:calc(100% + 5px);right:0;background:white;color:black;border-radius:3px;padding:10px 15px;border:1px solid #ccc;display:none;}
-.sal--block{display:block !important;}
-.sal--input{box-sizing:border-box;padding:4px 6px;margin-bottom:5px;border:1px solid #ccc}
-.sal--btn-submit{display:block;outline:none;border:none;border-radius:3px;padding:5px;cursor:pointer;color:white;background:black;margin-top:10px;}
-.sal--autorefresh{padding-left:5px;}
-.sal--autorefresh input[type="checkbox"]{float:left;}`);
-
-        var login_url_value = window.localStorage.getItem(`${key_prefix}loginurl`),
-              refresh_url_value = window.localStorage.getItem(`${key_prefix}refreshurl`),
-              email_value = window.localStorage.getItem(`${key_prefix}email`),
-              password_value = window.localStorage.getItem(`${key_prefix}password`),
-              autorefresh_value = window.localStorage.getItem(`${key_prefix}autorefresh`) === "true";
-
-        var box = document.createElement("div");
         box.classList.add("sal--box");
         box.innerHTML = `<button class="sal--btn" id="toggle_btn">SAL</button>
-<div class="sal--box-content">
-    <form>
-        <input class="sal--input" placeholder="Login URL" value="${login_url_value || ''}" id="login_url_input" required="true">
-        <input class="sal--input" placeholder="Refresh URL" value="${refresh_url_value || ''}" id="refresh_url_input" required="true">
-        <input class="sal--input" type="email" placeholder="Email" value="${email_value || ''}" id="email_input" required="true">
-        <input class="sal--input" type="password" placeholder="Password" value="${password_value || ''}" id="password_input" required="true">
-        <label><input type="checkbox" checked="${autorefresh_value || 'false'}" id="autorefresh_input">Auto Refresh</label>
-        <button class="sal--btn-submit" type="submit">Save & Refresh</button>
-    </form>
-</div>`;
+            <div class="sal--box-content">
+                <form>
+                    <input class="sal--input" placeholder="Login URL" value="${
+                        data.login_url || ""
+                    }" id="login_url_input" required="true">
+                    <input class="sal--input" placeholder="Refresh URL" value="${
+                        data.refresh_url || ""
+                    }" id="refresh_url_input" required="true">
+                    <input class="sal--input" type="email" placeholder="Email" value="${
+                        data.email || ""
+                    }" id="email_input" required="true">
+                    <input class="sal--input" type="password" placeholder="Password" value="${
+                        data.password || ""
+                    }" id="password_input" required="true">
+                    <label><input type="checkbox" checked="${
+                        data.autorefresh || "false"
+                    }" id="autorefresh_input">Auto Refresh</label>
+                    <button class="sal--btn-submit" type="submit">Save & Refresh</button>
+                </form>
+            </div>`;
 
-        var toggle_button = _$(box, "#toggle_btn"),
-            box_content = _$(box, ".sal--box-content"),
-            login_url_input = _$(box, "#login_url_input"),
-            refresh_url_input = _$(box, "#refresh_url_input"),
-            email_input = _$(box, "#email_input"),
-            password_input = _$(box, "#password_input"),
-            form = _$(box, "form"),
-            autorefresh_input = _$(box, "#autorefresh_input");
+        _$("#toggle_btn", box).onclick = () => {
+            _$(".sal--box-content", box).classList.toggle("sal--block");
+        };
 
+        function resetMessage() {
+            _$("#toggle_btn", box).removeAttribute("title");
+            _$("#toggle_btn", box).classList.remove("success", "danger");
+        }
+        function error(message=null) {
+            resetMessage();
+            _$("#toggle_btn", box).classList.add("danger");
+            if (message) {
+                _$("#toggle_btn", box).title = message;
+            }
+        }
+        function success() {
+            resetMessage();
+            _$("#toggle_btn", box).classList.add("success");
+        }
 
         window.ui.authActions.authorize = function (payload) {
-            payload.Bearer.value = payload.Bearer.value.replace("bearer ", "Bearer ");
-            if (!payload.Bearer.value.includes("Bearer")) {
-                payload.Bearer.value = `Bearer ${payload.Bearer.value}`;
-            }
-            window.localStorage.setItem(`${key_prefix}token`, payload.Bearer.value);
+            let token = payload.Bearer.value.replace("Bearer", "").replace("bearer", "").trim();
+            payload.Bearer.value = `Bearer ${token}`;
+            localSet(`${key_prefix}token`, token);
+            success();
             return originalAuthorize(payload);
         };
 
         window.ui.authActions.logout = function (payload) {
-            window.localStorage.removeItem(`${key_prefix}token`);
-            window.localStorage.removeItem(`${key_prefix}refresh`);
-            toggle_button.classList.remove("success", "danger");
+            localRem(`${key_prefix}token`);
+            localRem(`${key_prefix}refresh`);
+            resetMessage();
             return originalLogout(payload);
         };
 
-        toggle_button.onclick = () => {
-            box_content.classList.toggle("sal--block");
-            login_url_input.focus();
-        }
+        function authorize(token) {
+            clearInterval(window.sal_check_lively);
+            token = token.replace("bearer", "").replace("Bearer", "").trim();
 
-        const refresh = (refresh) => {
-            requests(refresh_url_value, {refresh}, "POST")
-            .then(data => {
-                let access_token = find_key(data, "access");
-                if (!access_token) {
-                    throw new Error("Failed to refresh");
-                }
-
-                window.localStorage.setItem(`${key_prefix}token`, access_token);
-                window.ui.preauthorizeApiKey("Bearer", access_token);
-
-                swagger_authorize(access_token);
-            })
-            .catch(err => {
+            try {
+                var decoded = jwt_decode(token);
+                window.token_exp = new Date(decoded.exp * 1000);
+            }
+            catch (err) {
                 console.error(err);
-                toggle_button.classList.remove("success", "danger");
-                toggle_button.classList.add("danger");
-                toggle_button.title = "Error: Failed to login";
-            })
-        }
-
-        const check_alive = () => {
-            if (window.token_exp <= new Date()) {
-                try {
-                    refresh(window.localStorage.getItem(`${key_prefix}refresh`))
-                } catch(err) {
-                    console.error(err);
-                    toggle_button.classList.remove("success", "danger");
-                    toggle_button.classList.add("danger");
-                    toggle_button.title = "Error: Failed to login";
-
-                    login(login_url_value, email_value, password_value);
-                }
+                return login();
             }
-            if (autorefresh_value === true) {
-                setTimeout(check_alive, 5000);
+
+            let result = window.ui.preauthorizeApiKey("Bearer", `Bearer ${token}`);
+            if (result === null) {
+                return setTimeout(authorize(token), 300);
+            }
+            success();
+
+            if (data.autorefresh === "true") {
+                console.log("Checking for token lively...");
+                window.sal_check_lively = setInterval(check_lively, 5000);
             }
         }
 
-        const swagger_authorize = (token) => {
-            if (token) {
-                try {
-                    token = token.replace("Bearer ", "");
-                    var decoded = jwt_decode(token); // eslint-disable-line
-                    window.token_exp = new Date(decoded.exp * 1000);
-                    check_alive();
-                }
-                catch (err) {
-                    console.error(err);
-                    toggle_button.classList.remove("success", "danger");
-                    toggle_button.classList.add("danger");
-                    toggle_button.title = "Error: Failed to login";
-                    return;
-                }
+        function refresh() {
+            if (!data.refresh_url) {
+                _$(".sal--box-content", box).classList.add("sal--block");
+                throw new Error("Failed to refresh.");
+            }
+            console.log("refreshing...");
+            axios.post(data.refresh_url, {
+                refresh: localGet(`${key_prefix}refresh`)
+            })
+            .then((res) => {
+                let access = findKey(res.data, "access");
 
-                const authorize = () => {
-                    token = token.replace("bearer ", "Bearer ");
-                    if (!token.includes("Bearer")) {
-                        token = `Bearer ${token}`;
-                    }
-                    let result = window.ui.preauthorizeApiKey("Bearer", token);
-                    if (result === null) {
-                        return setTimeout(authorize, 300);
-                    }
-                    toggle_button.classList.add("success");
-                };
-                authorize();
+                localSet(`${key_prefix}token`, access);
+
+                authorize(access);
+                success();
+            })
+            .catch((err) => {
+                console.error(err.response.data);
+                error(err.response.data.message);
+                return login();
+            });
+        }
+
+        function login() {
+            if (!data.login_url || !data.email || !data.password) {
+                _$(".sal--box-content", box).classList.add("sal--block");
+                throw new Error("Failed to login.");
+            }
+            axios
+                .post(data.login_url, {
+                    email: data.email,
+                    password: data.password,
+                })
+                .then((res) => {
+                    let access = findKey(res.data, "access"),
+                        refresh = findKey(res.data, "refresh");
+
+                    localSet(`${key_prefix}token`, access);
+                    localSet(`${key_prefix}refresh`, refresh);
+
+                    authorize(access);
+                    success();
+                })
+                .catch((err) => {
+                    console.error(err.response.data);
+                    error(err.response.data.message);
+                });
+        }
+
+        function check_lively() {
+            if (window.token_exp && window.token_exp < new Date()) {
+                refresh();
             }
         }
 
-        const login = (url, email, password) => {
-            requests(url, {email, password}, "POST")
-            .then(data => {
-                try {
-                    let refresh_token = find_key(data, "refresh"),
-                        access_token = find_key(data, "access");
-                    if (!refresh_token && !access_token) {
-                        throw new Error("Failed to login");
-                    }
+        _$("form", box).onsubmit = (e) => {
+            e.preventDefault();
 
-                    window.localStorage.setItem(`${key_prefix}token`, access_token);
-                    window.localStorage.setItem(`${key_prefix}refresh`, refresh_token);
-                    window.ui.preauthorizeApiKey("Bearer", access_token);
+            localRem(`${key_prefix}token`);
+            localRem(`${key_prefix}refresh`);
 
-                    swagger_authorize(access_token);
-                } catch (err) {
-                    console.error(err);
-                    toggle_button.classList.remove("success", "danger");
-                    toggle_button.classList.add("danger");
-                    toggle_button.title = "Error: Failed to login";
-                    return;
-                }
-            })
-                .catch(err => {
-                console.error(err);
-            })
-        }
+            for (let key of keys) {
+                let el = _$(`#${key}_input`, box);
+                data[key] = el.type === "checkbox" ? el.checked : el.value;
+                localSet(`${key_prefix}${key}`, data[key]);
+            }
 
-        form.onsubmit = (event) => {
-            event.preventDefault();
-            login_url_value = login_url_input.value;
-            refresh_url_value = refresh_url_input.value;
-            email_value = email_input.value;
-            password_value = password_input.value;
-            autorefresh_value = autorefresh_input.checked;
+            originalLogout(["Bearer"]);
+            login();
 
-            window.localStorage.removeItem(`${key_prefix}token`);
-            window.localStorage.removeItem(`${key_prefix}refresh`);
-            window.localStorage.setItem(`${key_prefix}loginurl`, login_url_value);
-            window.localStorage.setItem(`${key_prefix}refreshurl`, refresh_url_value);
-            window.localStorage.setItem(`${key_prefix}email`, email_value);
-            window.localStorage.setItem(`${key_prefix}password`, password_value);
-            window.localStorage.setItem(`${key_prefix}autorefresh`, autorefresh_value);
+            _$(".sal--box-content", box).classList.remove("sal--block");
+        };
 
-            box_content.classList.remove("sal--block");
-            login(login_url_value, email_value, password_value);
-        }
-
-        box.append(toggle_button, box_content);
         document.body.appendChild(box);
 
-        var token = window.localStorage.getItem(`${key_prefix}token`);
-        if (!token && login_url_value && email_value && password_value) {
-            login(login_url_value, email_value, password_value);
-        } else if(token) {
-            swagger_authorize(token);
+        let token = localGet(`${key_prefix}token`);
+        if (token) {
+            authorize(token);
         }
     };
     init();
