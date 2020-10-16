@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      2.1
+// @version      2.2
 // @description  Remember Swagger Bearer token
 // @author       hai.luu
 // @match        http://localhost/*
@@ -52,7 +52,7 @@ function findKey(obj, key) {
         console.log("%cSwagger-Auto-Login Is Running", "color:white;background:red;font-size:20px;");
 
         addStyle(
-            `.sal--btn{outline:0;border:1px solid #ccc;border-radius:3px;padding:5px;cursor:pointer}.sal--btn.danger{color:#fff;background:red}.sal--btn.success{color:#fff;background:#4caf50}.sal--box{position:fixed;top:20px;right:20px;z-index:99999}.sal--box-content{position:absolute;top:calc(100% + 5px);right:0;background:#fff;color:#000;border-radius:3px;padding:10px 15px;border:1px solid #ccc;display:none}.sal--block{display:block!important}.sal--input{box-sizing:border-box;padding:4px 6px;margin-bottom:5px;border:1px solid #ccc}.sal--btn-submit{display:block;outline:0;border:none;border-radius:3px;padding:5px;cursor:pointer;color:#fff;background:#000;margin-top:10px}.sal--autorefresh{padding-left:5px}.sal--autorefresh input[type=checkbox]{float:left}`
+            `.sal--btn{outline:0;border:1px solid #ccc;border-radius:3px;padding:5px;cursor:pointer}.sal--btn.danger{color:#fff;background:red}.sal--btn.success{color:#fff;background:#4caf50}.sal--box{position:fixed;top:20px;right:20px;z-index:99999}.sal--box-content{width:250px;position:absolute;top:calc(100% + 5px);right:0;background:#fff;color:#000;border-radius:3px;padding:10px 15px;border:1px solid #ccc;display:none}.sal--block{display:block!important}.sal--input{width:100%;box-sizing:border-box;padding:4px 6px;margin-bottom:5px;border:1px solid #ccc}.sal--btn-submit{display:block;outline:0;border:none;border-radius:3px;padding:5px;cursor:pointer;color:#fff;background:#000;margin-top:10px}.sal--autorefresh{padding-left:5px}.sal--autorefresh input[type=checkbox]{float:left}`
         );
 
         const key_prefix = window.location.pathname.includes("/admin") ? "admin_" : "",
@@ -88,12 +88,27 @@ function findKey(obj, key) {
                     <button class="sal--btn-submit" type="submit">Save & Refresh</button>
                 </form>
                 <hr>
-                <input type="text" class="sal--input" id="access_token" readonly placeholder="Access token" title="Access token">
-                <input type="text" class="sal--input" id="refresh_token" readonly placeholder="Refresh token" title="Refresh token">
+                <div style="display:flex;">
+                    <input type="text" class="sal--input" id="access_token" readonly placeholder="Access token" title="Access token">
+                    <button class="sal--btn" id="access_token_btn" title="Copy" style="margin-bottom:5px; margin-left:5px;">Copy</button>
+                </div>
+                <div style="display:flex;">
+                    <input type="text" class="sal--input" id="refresh_token" readonly placeholder="Refresh token" title="Refresh token">
+                    <button class="sal--btn" id="refresh_token_btn" title="Copy" style="margin-bottom:5px; margin-left:5px;">Copy</button>
+                </div>
             </div>`;
 
         _$("#toggle_btn", box).onclick = () => {
             _$(".sal--box-content", box).classList.toggle("sal--block");
+        };
+
+        _$("#access_token_btn", box).onclick = () => {
+            _$("#access_token", box).select();
+            document.execCommand("copy");
+        };
+        _$("#refresh_token_btn", box).onclick = () => {
+            _$("#refresh_token", box).select();
+            document.execCommand("copy");
         };
 
         function resetMessage() {
