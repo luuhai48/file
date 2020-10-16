@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      2.0
+// @version      2.1
 // @description  Remember Swagger Bearer token
 // @author       hai.luu
 // @match        http://localhost/*
@@ -87,6 +87,9 @@ function findKey(obj, key) {
                     }" id="autorefresh_input">Auto Refresh</label>
                     <button class="sal--btn-submit" type="submit">Save & Refresh</button>
                 </form>
+                <hr>
+                <input type="text" class="sal--input" id="access_token" readonly placeholder="Access token" title="Access token">
+                <input type="text" class="sal--input" id="refresh_token" readonly placeholder="Refresh token" title="Refresh token">
             </div>`;
 
         _$("#toggle_btn", box).onclick = () => {
@@ -107,6 +110,9 @@ function findKey(obj, key) {
         function success() {
             resetMessage();
             _$("#toggle_btn", box).classList.add("success");
+
+            _$("#access_token", box).value = localGet(`${key_prefix}token`);
+            _$("#refresh_token", box).value = localGet(`${key_prefix}refresh`);
         }
 
         window.ui.authActions.authorize = function (payload) {
@@ -141,6 +147,7 @@ function findKey(obj, key) {
             if (result === null) {
                 return setTimeout(authorize(token), 300);
             }
+
             success();
 
             if (data.autorefresh === "true") {
