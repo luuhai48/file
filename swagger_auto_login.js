@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      2.2
+// @version      2.3
 // @description  Remember Swagger Bearer token
 // @author       hai.luu
 // @match        http://localhost/*
@@ -160,7 +160,10 @@ function findKey(obj, key) {
 
             let result = window.ui.preauthorizeApiKey("Bearer", `Bearer ${token}`);
             if (result === null) {
-                return setTimeout(authorize(token), 300);
+                setTimeout(() => {
+                    authorize(token);
+                }, 500);
+                return;
             }
 
             success();
