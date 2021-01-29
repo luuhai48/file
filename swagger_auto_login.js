@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      2.3
-// @description  Remember Swagger Bearer token
+// @version      2.4
+// @description  Remember Swagger Bearer token, auto refresh and signin
 // @author       hai.luu
 // @match        http://localhost/*
 // @match        127.0.0.1/*
@@ -70,16 +70,16 @@ function findKey(obj, key) {
         box.innerHTML = `<button class="sal--btn" id="toggle_btn">SAL</button>
             <div class="sal--box-content">
                 <form>
-                    <input class="sal--input" placeholder="Login URL" value="${
+                    <input class="sal--input" placeholder="Login URL" title="Login URL" value="${
                         data.login_url || ""
                     }" id="login_url_input" required="true">
-                    <input class="sal--input" placeholder="Refresh URL" value="${
+                    <input class="sal--input" placeholder="Refresh URL" title="Refresh URL" value="${
                         data.refresh_url || ""
                     }" id="refresh_url_input" required="true">
-                    <input class="sal--input" type="email" placeholder="Email" value="${
+                    <input class="sal--input" type="email" placeholder="Email" title="Email" value="${
                         data.email || ""
                     }" id="email_input" required="true">
-                    <input class="sal--input" type="password" placeholder="Password" value="${
+                    <input class="sal--input" type="text" placeholder="Password" title="Password" value="${
                         data.password || ""
                     }" id="password_input" required="true">
                     <label><input type="checkbox" checked="${
@@ -114,6 +114,8 @@ function findKey(obj, key) {
         function resetMessage() {
             _$("#toggle_btn", box).removeAttribute("title");
             _$("#toggle_btn", box).classList.remove("success", "danger");
+            _$("#access_token", box).title = "Access token";
+            _$("#refresh_token", box).title = "Refresh token";
         }
         function error(message=null) {
             resetMessage();
@@ -127,6 +129,20 @@ function findKey(obj, key) {
             _$("#toggle_btn", box).classList.add("success");
 
             _$("#access_token", box).value = localGet(`${key_prefix}token`);
+            let decoded = jwt_decode(localGet(`${key_prefix}token`));
+            let access_token_title = "";
+            for (const [key, val] of Object.entries(decoded)) {
+                access_token_title += `${key}: ${val}\n`;
+            }
+            _$("#access_token", box).title = access_token_title.trim();
+
+            decoded = jwt_decode(localGet(`${key_prefix}refresh`));
+            let refresh_token_title = "";
+            for (const [key, val] of Object.entries(decoded)) {
+                refresh_token_title += `${key}: ${val}\n`;
+            }
+            _$("#refresh_token", box).title = refresh_token_title.trim();
+
             _$("#refresh_token", box).value = localGet(`${key_prefix}refresh`);
         }
 
