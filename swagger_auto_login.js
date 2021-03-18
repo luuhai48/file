@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swagger Auto Login
 // @namespace    https://canteccouriers.com
-// @version      2.4
+// @version      2.5
 // @description  Remember Swagger Bearer token, auto refresh and signin
 // @author       hai.luu
 // @match        http://localhost/*
@@ -128,22 +128,28 @@ function findKey(obj, key) {
             resetMessage();
             _$("#toggle_btn", box).classList.add("success");
 
-            _$("#access_token", box).value = localGet(`${key_prefix}token`);
-            let decoded = jwt_decode(localGet(`${key_prefix}token`));
-            let access_token_title = "";
-            for (const [key, val] of Object.entries(decoded)) {
-                access_token_title += `${key}: ${val}\n`;
+            let access_token = localGet(`${key_prefix}token`);
+            if (access_token) {
+                _$("#access_token", box).value = access_token;
+                let decoded = jwt_decode(access_token);
+                let access_token_title = "";
+                for (const [key, val] of Object.entries(decoded)) {
+                    access_token_title += `${key}: ${val}\n`;
+                }
+                _$("#access_token", box).title = access_token_title.trim();
             }
-            _$("#access_token", box).title = access_token_title.trim();
 
-            decoded = jwt_decode(localGet(`${key_prefix}refresh`));
-            let refresh_token_title = "";
-            for (const [key, val] of Object.entries(decoded)) {
-                refresh_token_title += `${key}: ${val}\n`;
+            let refresh_token = localGet(`${key_prefix}refresh`);
+            if (refresh_token) {
+                let decoded = jwt_decode(refresh_token);
+                let refresh_token_title = "";
+                for (const [key, val] of Object.entries(decoded)) {
+                    refresh_token_title += `${key}: ${val}\n`;
+                }
+                _$("#refresh_token", box).title = refresh_token_title.trim();
+
+                _$("#refresh_token", box).value = localGet(`${key_prefix}refresh`);
             }
-            _$("#refresh_token", box).title = refresh_token_title.trim();
-
-            _$("#refresh_token", box).value = localGet(`${key_prefix}refresh`);
         }
 
         window.ui.authActions.authorize = function (payload) {
@@ -157,6 +163,8 @@ function findKey(obj, key) {
         window.ui.authActions.logout = function (payload) {
             localRem(`${key_prefix}token`);
             localRem(`${key_prefix}refresh`);
+            _$("#access_token", box).value = "";
+            _$("#refresh_token", box).value = "";
             resetMessage();
             return originalLogout(payload);
         };
@@ -208,7 +216,7 @@ function findKey(obj, key) {
                 success();
             })
             .catch((err) => {
-                console.error(err.response.data);
+                console.error(err);
                 error(err.response.data.message);
                 return login();
             });
