@@ -1,0 +1,279 @@
+[
+  {
+    "chain_name": "avalanche",
+    "chain_id": "43114",
+    "tokens": [
+      {
+        "chain_name": "Wrapped AVAX",
+        "symbol": "WAVAX",
+        "address": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
+        "decimals": 18,
+        "cgkId": "avalanche-2"
+      },
+      {
+        "chain_name": "Tether USD",
+        "symbol": "USDT.e",
+        "address": "0xc7198437980c041c805a1edcba50c1ce5db95118",
+        "decimals": 6,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI.e",
+        "address": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "USD Coin",
+        "symbol": "USDC.e",
+        "address": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+        "decimals": 6,
+        "cgkId": "usd-coin"
+      },
+      {
+        "chain_name": "Wrapped Ether",
+        "symbol": "WETH.e",
+        "address": "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab",
+        "decimals": 18,
+        "cgkId": "ethereum"
+      },
+      {
+        "chain_name": "Wrapped BTC",
+        "symbol": "WBTC.e",
+        "address": "0x50b7545627a5162f82a992c33b87adc75187b218",
+        "decimals": 8
+      }
+    ]
+  },
+  {
+    "chain_name": "bsc",
+    "chain_id": "56",
+    "tokens": [
+      {
+        "chain_name": "Wrapped BNB",
+        "symbol": "WBNB",
+        "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "decimals": 18,
+        "cgkId": "wbnb"
+      },
+      {
+        "chain_name": "Tether USD",
+        "symbol": "USDT",
+        "address": "0x55d398326f99059ff775485246999027b3197955",
+        "decimals": 18,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "Binance-Peg USD Coin",
+        "symbol": "USDC",
+        "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+        "decimals": 18,
+        "cgkId": "usd-coin"
+      },
+      {
+        "chain_name": "Binance USD",
+        "symbol": "BUSD",
+        "address": "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+        "decimals": 18,
+        "cgkId": "binance-usd"
+      },
+      {
+        "chain_name": "Ethereum Token",
+        "symbol": "ETH",
+        "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+        "decimals": 18,
+        "cgkId": "ethereum"
+      },
+      {
+        "chain_name": "BTCB Token",
+        "symbol": "BTCB",
+        "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+        "decimals": 18
+      },
+      {
+        "chain_name": "PancakeSwap Token",
+        "symbol": "CAKE",
+        "address": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+        "decimals": 18
+      }
+    ]
+  },
+  {
+    "chain_name": "cronos",
+    "chain_id": "25",
+    "tokens": [
+      {
+        "chain_name": "Wrapped CRO",
+        "symbol": "WCRO",
+        "address": "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23",
+        "decimals": 18,
+        "cgkId": "crypto-com-coin"
+      },
+      {
+        "chain_name": "Wrapped Ether",
+        "symbol": "WETH",
+        "address": "0xe44Fd7fCb2b1581822D0c862B68222998a0c299a",
+        "decimals": 18,
+        "cgkId": "ethereum"
+      },
+      {
+        "chain_name": "Tether USD",
+        "symbol": "USDT",
+        "address": "0x66e428c3f67a68878562e79A0234c1F83c208770",
+        "decimals": 6,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "address": "0xF2001B145b43032AAF5Ee2884e456CCd805F677D",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59",
+        "decimals": 6,
+        "cgkId": "usd-coin"
+      },
+      {
+        "chain_name": "Wrapped BTC",
+        "symbol": "WBTC",
+        "address": "0x062E66477Faf219F25D27dCED647BF57C3107d52",
+        "decimals": 8,
+        "cgkId": "bitcoin"
+      }
+    ]
+  },
+  {
+    "chain_name": "ethereum",
+    "chain_id": "1",
+    "tokens": [
+      {
+        "chain_name": "Wrapped Ether",
+        "symbol": "WETH",
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "decimals": 18,
+        "cgkId": "ethereum"
+      },
+      {
+        "chain_name": "Tether USD",
+        "symbol": "USDT",
+        "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "decimals": 6,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "decimals": 6,
+        "cgkId": "usd-coin"
+      },
+      {
+        "chain_name": "Wrapped BTC",
+        "symbol": "WBTC",
+        "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "decimals": 8,
+        "cgkId": "bitcoin"
+      }
+    ]
+  },
+  {
+    "chain_name": "fantom",
+    "chain_id": "250",
+    "tokens": [
+      {
+        "chain_name": "Wrapped Fantom",
+        "symbol": "FTM",
+        "address": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
+        "decimals": 18,
+        "cgkId": "wrapped-fantom"
+      },
+      {
+        "chain_name": "Frapped USDT",
+        "symbol": "fUSDT",
+        "address": "0x049d68029688eabf473097a2fc38ef61633a3c7a",
+        "decimals": 6,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "address": "0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0x04068da6c83afcfa0e13ba15a6696662335d5b75",
+        "decimals": 6,
+        "cgkId": "usd-coin"
+      },
+      {
+        "chain_name": "Wrapped Ether",
+        "symbol": "WETH",
+        "address": "0x74b23882a30290451a17c44f4f05243b6b58c76d",
+        "decimals": 18,
+        "cgkId": "ethereum"
+      },
+      {
+        "chain_name": "Wrapped BTC",
+        "symbol": "BTC",
+        "address": "0x321162cd933e2be498cd2267a90534a804051b11",
+        "decimals": 8
+      }
+    ]
+  },
+  {
+    "chain_name": "polygon",
+    "chain_id": "137",
+    "tokens": [
+      {
+        "chain_name": "Wrapped Matic",
+        "symbol": "WMATIC",
+        "address": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+        "decimals": 18,
+        "cgkId": "wmatic"
+      },
+      {
+        "chain_name": "Tether USD",
+        "symbol": "USDT",
+        "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "decimals": 6,
+        "cgkId": "tether"
+      },
+      {
+        "chain_name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "address": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "decimals": 18,
+        "cgkId": "dai"
+      },
+      {
+        "chain_name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "decimals": 6,
+        "cgkId": "usd-coin"
+      }
+    ]
+  }
+]
